@@ -8,6 +8,7 @@
         "path": "data/to.txt"
     },
     "transform": {
-        "type": "json"
+        "type": "json",
+        "filter": [1,2,3]
     }
 }

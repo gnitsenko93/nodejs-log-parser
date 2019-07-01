@@ -2,7 +2,7 @@
 
 const Transport = require('../transport-abstract');
 
-const { Transform } = require('stream');
+const { JsonTransformController } = require('../../controller');
 
 class JsonTransform extends Transport {
 
@@ -13,12 +13,7 @@ class JsonTransform extends Transport {
     }
 
     async start() {
-        this._stream = new Transform({
-            transform(chunk, encoding, callback) {
-                this.push(chunk);
-                return callback();
-            }
-        });
+        this._stream = new JsonTransformController(this._options);
 
         return this._stream;
     }
