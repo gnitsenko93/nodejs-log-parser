@@ -1,8 +1,8 @@
-var Config = require('./config/file-to-file.json');
-var Source = require('./transport/file-source');
-var Target = require('./transport/file-target');
+'use strict';
 
-var source = new Source(Config.source);
-var target = new Target(Config.target);
+const Config = require('./config/file-to-file.json');
+const Service = require('./service');
 
-source.stream.pipe(target.stream);
+const service = new Service(Config);
+
+service.start();

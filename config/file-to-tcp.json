@@ -1,0 +1,14 @@
+{
+  "source": {
+    "type": "file",
+    "path": "data/from.txt"
+  },
+  "target": {
+    "type": "tcp",
+    "port": 1337,
+    "address": "127.0.0.1"
+  },
+  "transform": {
+    "type": "json"
+  }
+}

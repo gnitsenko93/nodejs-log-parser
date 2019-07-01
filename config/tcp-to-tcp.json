@@ -1,0 +1,15 @@
+{
+  "source": {
+    "type": "tcp",
+    "port": 1337,
+    "address": "127.0.0.1"
+  },
+  "target": {
+    "type": "tcp",
+    "port": 1338,
+    "address": "127.0.0.1"
+  },
+  "transform": {
+    "type": "json"
+  }
+}

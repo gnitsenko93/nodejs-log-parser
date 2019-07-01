@@ -6,5 +6,8 @@
     "target": {
         "type": "file",
         "path": "data/to.txt"
+    },
+    "transform": {
+        "type": "json"
     }
 }
