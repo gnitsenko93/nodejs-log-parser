@@ -2,6 +2,9 @@
 
 ### (Break.Feature.Fix)
 
+## 1.1.2
+* Refactoring. Splitting Controller into smaller data processors.
+
 ## 1.1.1
 * Feature. Adding Controller layer for Transform transport.
 
