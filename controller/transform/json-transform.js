@@ -2,6 +2,8 @@
 
 const { Transform } = require('stream');
 
+const util = require('./util');
+
 class JsonTransformStream extends Transform {
 
     constructor(options) {
@@ -11,9 +13,11 @@ class JsonTransformStream extends Transform {
     }
 
     _flush(callback) {
-        const data = this._unstashUnformattedLog();
+        const stash = this._stash;
 
-        this.push(data);
+        if (stash !== '') {
+            this.push(this._parseUnformattedLog(stash));
+        }
 
         return callback();
     }
@@ -54,7 +58,7 @@ class JsonTransformStream extends Transform {
         if (data) {
 
             if (stash !== '') {
-                this.push(stash + '\n');
+                this.push(this._parseUnformattedLog(stash));
                 this._unstashUnformattedLog();
             }
 
@@ -63,7 +67,7 @@ class JsonTransformStream extends Transform {
             const isNewError = !(/\.js\:\d+/.test(line));
 
             if (isNewError && stash !== '') {
-                this.push(stash + '\n');
+                this.push(this._parseUnformattedLog(stash));
                 this._unstashUnformattedLog();
             }
             this._stashUnformattedLog(line);
@@ -75,19 +79,25 @@ class JsonTransformStream extends Transform {
     _parseClientLog(line) {
         const parsedLine = JSON.parse(line);
 
-        return JSON.stringify(parsedLine) + '\n';
+        return util.jsonToJson(parsedLine);
     }
 
     _parseServerLog(line) {
-        return line + '\n';
+        return util.rfc5424ToJson(line);
+    }
+
+    _parseUnformattedLog(stash) {
+        return util.unFormattedToJson(stash);
     }
 
     _stashUnformattedLog(line) {
         this._stash += line;
+
+        return this._stash;
     }
 
     _unstashUnformattedLog() {
-        const stash = this._stash + '\n';
+        const stash = this._stash;
 
         this._stash = '';
 
