@@ -19,8 +19,8 @@ class Consumer extends Processor {
     }
 
     /**
-     *
-     * @param options
+     * Gets consumer  transport.
+     * @param {SourceOptions} options -
      * @return {Transport} -
      * @private
      * @override

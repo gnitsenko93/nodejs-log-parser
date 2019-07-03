@@ -4,8 +4,21 @@ const Transport = require('../transport-abstract');
 
 const { JsonTransformController } = require('../../controller');
 
+/**
+ * @class JsonTransform
+ * @extends Transport
+ */
 class JsonTransform extends Transport {
 
+    /**
+     * @typedef {Object} TransformOptions
+     */
+
+    /**
+     *
+     * @param {TransformOptions} options -
+     * @constructor
+     */
     constructor(options) {
         super(options);
 

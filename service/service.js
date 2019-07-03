@@ -55,10 +55,14 @@ class Service extends Logable {
      * @return {Promise<null>} -
      */
     async start() {
+        this._log('Starting service.');
+
         const producerStream = await this._producer.start();
         const consumerStream = await this._consumer.start();
 
         const transformerStream = await this._transformer.start();
+
+        this._log('Service is started.');
 
         try {
             await pipeline(
@@ -71,6 +75,7 @@ class Service extends Logable {
 
         } catch (error) {
             this._logError('Error on processing data.');
+            this._logError(error);
             return this.stop(error);
         }
 
@@ -82,9 +87,13 @@ class Service extends Logable {
      * @return {Promise<null>} service is stopped.
      */
     async stop(error) {
+        this._log('Stopping service.');
+
         await this._producer.stop();
         await this._consumer.stop();
         await this._transformer.stop();
+
+        this._log('Service is stopped.');
 
         return process.exit(error? 1 : 0)
     }
