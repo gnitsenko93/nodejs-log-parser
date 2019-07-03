@@ -12,6 +12,10 @@ class JsonTransformStream extends Transform {
         this._stash = '';
     }
 
+    push(chunks) {
+        (chunks || []).forEach(chunk => super.push(JSON.stringify(chunk, null, 2) + '\n'));
+    }
+
     _flush(callback) {
         const stash = this._stash;
 
@@ -29,9 +33,11 @@ class JsonTransformStream extends Transform {
 
         console.log(`Chunk is splitted into lines. Meta=${JSON.stringify({count: lines.length})}`)
 
-        lines.forEach(line => this._processLine(line));
+        const data = lines.reduce((acc, line) => {
+            return acc.concat(this._processLine(line).filter(v => !this._filter.includes(v.type)))
+        }, []);
 
-        return callback();
+        return callback(null, data);
     }
 
     _processLine(line) {
@@ -55,31 +61,31 @@ class JsonTransformStream extends Transform {
 
         const stash = this._stash;
 
+        let result = [];
+
         if (data) {
 
             if (stash !== '') {
-                this.push(this._parseUnformattedLog(stash));
+                result.push({ timestamp: data.timestamp, ...this._parseUnformattedLog(stash)});
                 this._unstashUnformattedLog();
             }
 
-            this.push(data);
+            result.push(data);
         } else {
             const isNewError = !(/\.js\:\d+/.test(line));
 
             if (isNewError && stash !== '') {
-                this.push(this._parseUnformattedLog(stash));
+                result.push(this._parseUnformattedLog(stash));
                 this._unstashUnformattedLog();
             }
             this._stashUnformattedLog(line);
         }
 
-        return;
+        return result;
     }
 
     _parseClientLog(line) {
-        const parsedLine = JSON.parse(line);
-
-        return util.jsonToJson(parsedLine);
+        return util.jsonToJson(line);
     }
 
     _parseServerLog(line) {

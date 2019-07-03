@@ -2,6 +2,9 @@
 
 ### (Break.Feature.Fix)
 
+## 1.2.2
+* Feature. Implementing data processors for Transform Controller.
+
 ## 1.1.2
 * Refactoring. Splitting Controller into smaller data processors.
 

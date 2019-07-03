@@ -9,6 +9,6 @@
     },
     "transform": {
         "type": "json",
-        "filter": []
+        "filter": ["ERROR"]
     }
 }
