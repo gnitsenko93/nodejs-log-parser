@@ -13,7 +13,7 @@ class JsonTransformStream extends Transform {
     }
 
     push(chunks) {
-        (chunks || []).forEach(chunk => super.push(JSON.stringify(chunk, null, 2) + '\n'));
+        (chunks || []).forEach(chunk => super.push('\n' + JSON.stringify(chunk, null, 2)));
     }
 
     _flush(callback) {
