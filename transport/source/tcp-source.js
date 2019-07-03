@@ -26,7 +26,7 @@ class TcpSource extends Transport {
         this._stream = new PassThrough();
 
         this._server = createServer(function (socket) {
-            socket.pipe(this._stream)
+            socket.pipe(this._stream, { end: false })
         }.bind(this));
 
         await promisify(this._server.listen.bind(this._server))(this._port, this._address);
