@@ -71,6 +71,7 @@ class Service extends Logable {
 
         } catch (error) {
             this._logError('Error on processing data.');
+            return this.stop(error);
         }
 
         return this.stop();
@@ -80,12 +81,12 @@ class Service extends Logable {
      * Stops service.
      * @return {Promise<null>} service is stopped.
      */
-    async stop() {
+    async stop(error) {
         await this._producer.stop();
         await this._consumer.stop();
         await this._transformer.stop();
 
-        return null;
+        return process.exit(error? 1 : 0)
     }
 
 }
