@@ -30,3 +30,4 @@ As todos I can mention following things:
     * parsing algorithm is primitive and can be optimized.
     * rfc5424 parsing is not perfect for Structured Data.
 * Add unit test coverage. 
+* Extend configuration file with more parameters (e.g. output format)
